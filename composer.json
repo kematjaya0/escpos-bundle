@@ -13,7 +13,7 @@
         "symfony/config": "^4.0|^5.0",
         "symfony/framework-bundle": "^4.0|^5.0",
         "symfony/yaml": "^4.0|^5.0",
-        "symfony/http-foundation": "^5.2",
+        "symfony/http-foundation": "^4.0|^5.0",
         "mike42/escpos-php": "^3.0"
     },
     "require-dev": {

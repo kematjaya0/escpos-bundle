@@ -19,7 +19,7 @@ class TextFormatter implements FormatterInterface
     
     public function addEnter()
     {
-        $this->content .= "\n";
+        $this->content .= PHP_EOL;
         
         return $this;
     }
