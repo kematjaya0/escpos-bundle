@@ -1,7 +1,7 @@
 {
     "name": "kematjaya/escpos-bundle",
     "type": "symfony-bundle",
-    "license": "personal",
+    "license": "proprietary",
     "authors": [
         {
             "name": "Nur Hidayatullah",
