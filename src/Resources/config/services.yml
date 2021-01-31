@@ -1,0 +1,14 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        
+    Kematjaya\EscposBundle\Printer\PrinterInterface:
+        class: Kematjaya\EscposBundle\Printer\EscPOS
+        
+    Kematjaya\EscposBundle\Helper\PrinterHelperInterface:
+        class: Kematjaya\EscposBundle\Helper\PrinterHelper
+        
+    Kematjaya\EscposBundle\FileHandler\FileHandlerInterface:
+        class: Kematjaya\EscposBundle\FileHandler\TextFileHandler

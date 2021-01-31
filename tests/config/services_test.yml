@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+        
+    printer_helper:
+        alias: Kematjaya\EscposBundle\Helper\PrinterHelperInterface
+        public: true
+        
+    printer:
+        alias: Kematjaya\EscposBundle\Printer\PrinterInterface
+        public: true
