@@ -18,7 +18,7 @@ use Symfony\Component\Config\FileLocator;
  */
 class EscposExtension extends Extension
 {
-    public function load(array $configs, ContainerBuilder $container) 
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Resources/config'));
         $loader->load('services.yml');

@@ -1,0 +1,20 @@
+framework:
+    test: true
+    secret: test
+    http_method_override: false
+    handle_all_throwables: true
+    php_errors:
+        log: true
+
+services:
+    test.printer_helper:
+        alias: Kematjaya\EscposBundle\Helper\PrinterHelperInterface
+        public: true
+
+    test.printer:
+        alias: Kematjaya\EscposBundle\Printer\PrinterInterface
+        public: true
+
+    test.file_handler:
+        alias: Kematjaya\EscposBundle\FileHandler\FileHandlerInterface
+        public: true

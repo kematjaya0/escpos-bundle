@@ -32,6 +32,8 @@ class TextFormatter implements FormatterInterface
     public function clear()
     {
         $this->content = null;
+        
+        return $this;
     }
     
     public function setHeader(string $header):FormatterInterface

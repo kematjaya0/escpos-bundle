@@ -25,6 +25,18 @@ class DefaultClient extends AbstractWindowsClient
      */
     private $printerName;
     
+    /**
+     * 
+     * @var string|null
+     */
+    private $connectionName;
+    
+    /**
+     * 
+     * @var string|null
+     */
+    private $printerProfileName;
+    
     public function getComputerName(): ?string 
     {
         return $this->computerName;
@@ -48,6 +60,44 @@ class DefaultClient extends AbstractWindowsClient
         
         return $this;
     }
-
-
+    
+    /**
+     * Connection name, default smb://guest@{computer}/{printer}
+     * 
+     * @return string|null
+     */
+    public function getConnectionName(): ?string
+    {
+        return null !== $this->connectionName ? $this->connectionName : parent::getConnectionName();
+    }
+    
+    /**
+     * Set connection name, mis. "tcp://192.168.1.10:9100", "cups://POS-58", "file:///dev/usb/lp0"
+     * 
+     * @param  string|null $connectionName
+     * @return self
+     */
+    public function setConnectionName(?string $connectionName): self
+    {
+        $this->connectionName = $connectionName;
+        
+        return $this;
+    }
+    
+    /**
+     * Printer capability profile, default POS-5890
+     * 
+     * @return string|null
+     */
+    public function getPrinterProfileName(): ?string
+    {
+        return null !== $this->printerProfileName ? $this->printerProfileName : parent::getPrinterProfileName();
+    }
+    
+    public function setPrinterProfileName(?string $printerProfileName): self
+    {
+        $this->printerProfileName = $printerProfileName;
+        
+        return $this;
+    }
 }

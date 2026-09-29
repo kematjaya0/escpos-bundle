@@ -7,57 +7,45 @@
 namespace Kematjaya\EscposBundle\Tests;
 
 use Kematjaya\EscposBundle\Client\DefaultClient;
+use Kematjaya\EscposBundle\FileHandler\FileHandlerInterface;
 use Kematjaya\EscposBundle\Formatter\TextFormatter;
 use Kematjaya\EscposBundle\Helper\PrinterHelperInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Kematjaya\EscposBundle\Printer\PrinterInterface;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * @package Kematjaya\EscposBundle\Tests
  * @license https://opensource.org/licenses/MIT MIT
  * @author  Nur Hidayatullah <kematjaya0@gmail.com>
  */
-class EscposBundleTest extends WebTestCase
+class EscposBundleTest extends KernelTestCase
 {
-    public static function getKernelClass() 
+    protected static function getKernelClass(): string
     {
-        return AppKernelTest::class;
+        return AppKernel::class;
     }
-    
-    public function testInstanceClass():ContainerInterface
+
+    public function testServices()
     {
-        $client = parent::createClient();
-        $container = $client->getContainer();
-        $this->assertInstanceOf(ContainerInterface::class, $container);
-        
-        return $container;
+        $container = static::getContainer();
+        $this->assertInstanceOf(PrinterHelperInterface::class, $container->get('test.printer_helper'));
+        $this->assertInstanceOf(PrinterInterface::class, $container->get('test.printer'));
+        $this->assertInstanceOf(FileHandlerInterface::class, $container->get('test.file_handler'));
     }
-    
-    /**
-     * @depends testInstanceClass
-     * @param ContainerInterface $container
-     * @return PrinterHelperInterface
-     */
-    public function testHelperInstance(ContainerInterface $container): PrinterHelperInterface
+
+    public function testPrintToFile()
     {
-        $this->assertTrue($container->has('printer_helper'));
-        return $container->get('printer_helper');
-    }
-    
-    /**
-     * @depends testHelperInstance
-     * @param PrinterHelperInterface $helper
-     */
-    public function testPrintException(PrinterHelperInterface $helper)
-    {
-        $formatter = new TextFormatter();
-        $formatter->addText("test");
-        
-        $client = new DefaultClient();
-        $client->setComputerName("Local")
-                ->setPrinterName("POS-58");
-        
-        $this->expectException(\Exception::class);
-        $helper->print($formatter, $client);
+        $file = tempnam(sys_get_temp_dir(), 'kmj-escpos-out');
+        $formatter = (new TextFormatter())->setHeader('TOKO')->addText('test')->addEnter();
+        $client = (new DefaultClient())->setConnectionName('file://' . $file);
+
+        static::getContainer()->get('test.printer_helper')->print($formatter, $client);
+
+        $output = file_get_contents($file);
+        unlink($file);
+        $this->assertStringContainsString("TOKO\n", $output);
+        $this->assertStringContainsString("test\n", $output);
+        // GS V (cut)
+        $this->assertStringContainsString("\x1dV", $output);
     }
 }
