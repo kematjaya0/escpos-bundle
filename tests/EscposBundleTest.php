@@ -25,7 +25,7 @@ class EscposBundleTest extends KernelTestCase
         return AppKernel::class;
     }
 
-    public function testServices()
+    public function testServices(): void
     {
         $container = static::getContainer();
         $this->assertInstanceOf(PrinterHelperInterface::class, $container->get('test.printer_helper'));
@@ -33,7 +33,7 @@ class EscposBundleTest extends KernelTestCase
         $this->assertInstanceOf(FileHandlerInterface::class, $container->get('test.file_handler'));
     }
 
-    public function testPrintToFile()
+    public function testPrintToFile(): void
     {
         $file = tempnam(sys_get_temp_dir(), 'kmj-escpos-out');
         $formatter = (new TextFormatter())->setHeader('TOKO')->addText('test')->addEnter();

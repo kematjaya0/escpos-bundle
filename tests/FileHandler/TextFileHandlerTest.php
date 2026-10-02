@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class TextFileHandlerTest extends TestCase
 {
-    public function testHandle()
+    public function testHandle(): void
     {
         $formatter = (new TextFormatter())->setHeader('TOKO')->setText('isi');
         $response = (new TextFileHandler())->handle($formatter, 'struk.txt');
@@ -23,7 +23,7 @@ class TextFileHandlerTest extends TestCase
         $this->assertFileDoesNotExist($file);
     }
 
-    public function testFormatter()
+    public function testFormatter(): void
     {
         $formatter = (new TextFormatter())->addText('a')->addEnter()->addText('b');
         $this->assertSame('a' . PHP_EOL . 'b', $formatter->getText());

@@ -4,8 +4,8 @@ namespace Kematjaya\EscposBundle\Tests;
 
 use Kematjaya\EscposBundle\EscposBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * @author Nur Hidayatullah <kematjaya0@gmail.com>

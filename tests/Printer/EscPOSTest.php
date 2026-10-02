@@ -6,23 +6,21 @@ use Kematjaya\EscposBundle\Client\DefaultClient;
 use Kematjaya\EscposBundle\Exception\PrinterNotFoundException;
 use Kematjaya\EscposBundle\Formatter\TextFormatter;
 use Kematjaya\EscposBundle\Printer\EscPOS;
-use Mike42\Escpos\CapabilityProfile;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use PHPUnit\Framework\TestCase;
 
 class EscPOSTest extends TestCase
 {
-    private function call(string $method, DefaultClient $client)
+    private function call(string $method, DefaultClient $client): mixed
     {
         $printer = new EscPOS();
         $reflection = new \ReflectionMethod($printer, $method);
-        $reflection->setAccessible(true);
 
         return $reflection->invoke($printer, $client);
     }
 
-    public function testDefaultConnectionIsWindowsShare()
+    public function testDefaultConnectionIsWindowsShare(): void
     {
         $client = (new DefaultClient())->setComputerName('KASIR')->setPrinterName('POS-58');
 
@@ -33,11 +31,11 @@ class EscPOSTest extends TestCase
         try {
             // smbclient tidak tersedia di container test
             $connector->finalize();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
         }
     }
 
-    public function testFileConnector()
+    public function testFileConnector(): void
     {
         $file = tempnam(sys_get_temp_dir(), 'kmj-escpos');
         $connector = $this->call('createConnector', (new DefaultClient())->setConnectionName('file://' . $file));
@@ -47,7 +45,7 @@ class EscPOSTest extends TestCase
         $this->assertInstanceOf(FilePrintConnector::class, $connector);
     }
 
-    public function testNetworkPrinterNotFound()
+    public function testNetworkPrinterNotFound(): void
     {
         $client = (new DefaultClient())->setPrinterName('LAN')->setConnectionName('tcp://127.0.0.1:1');
 
@@ -56,7 +54,7 @@ class EscPOSTest extends TestCase
         (new EscPOS())->print((new TextFormatter())->addText('x'), $client);
     }
 
-    public function testProfile()
+    public function testProfile(): void
     {
         $client = new DefaultClient();
         $this->assertSame('POS-5890', $client->getPrinterProfileName());
@@ -69,7 +67,7 @@ class EscPOSTest extends TestCase
         $this->assertSame('default', $this->call('createProfile', $client)->getId());
     }
 
-    public function testUnknownProfile()
+    public function testUnknownProfile(): void
     {
         $file = tempnam(sys_get_temp_dir(), 'kmj-escpos');
         $client = (new DefaultClient())->setConnectionName('file://' . $file)->setPrinterProfileName('tidak-ada');

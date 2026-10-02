@@ -36,5 +36,5 @@ public function print(PrinterHelperInterface $printerHelper)
 
 ## Test
 ```
-sh docker/test.sh all
+sh ../test.sh escpos-bundle all
 ```
